@@ -2,8 +2,8 @@ public class NewtonController {
     //This controller does math using the Newton API
     //https://github.com/aunyks/newton-api  
 
-    //TODO #6- add more Newton ops
-    private static final String[] OPERATIONS = new list<String> {'derive'};
+    private static final String[] OPERATIONS = new list<String> {'simplify','factor','derive','integrate',
+        'zeroes','tangent','area','cos','sin','tan','arccos','arcsin','arctan','abs','log'};
     private static final String BASE_URL = 'https://newton.vercel.app';
     private static final String RESOURCE_URL = BASE_URL+'/api/v2/';
 
