@@ -4,22 +4,29 @@ public class NewtonController {
 
     //TODO #6- add more Newton ops
     private static final String[] OPERATIONS = new list<String> {'derive'};
+    private static final String BASE_URL = 'https://newton.vercel.app';
+    private static final String RESOURCE_URL = BASE_URL+'/api/v2/';
 
-    //Todo #5 - call the calculate function to demo
     public String demoCalculate(){
-        return '';
+        String operation = 'derive';
+        String expression = 'x^2';
+        String result = calculate(operation,expression);
+
+        system.debug(result);
+        return result;
     }
 
-    //todo implement calcualte, call http service
     public String calculate(String operation, String expression){
-        //TODO #1 - Error handling if invalid ops is called
+        throwExceptionIfInvalidOperation(operation);
+        String endpoint = RESOURCE_URL+operation+'/'+EncodingUtil.urlEncode(expression,'UTF-8');
+        return HttpCalloutService.makeRequest(endpoint);
+    }
 
-        //TODO #2 - Newton docs day expression must be url encoded
-
-        //TODO #3 - Build the endpoint url
-
-        //TODO #4
-        //HttpCalloutService.makeRequest(endpointUrl)
-        return '';
+    private void throwExceptionIfInvalidOperation(String op){
+        if (!OPERATIONS.contains(op)){
+            IllegalArgumentException e = new IllegalArgumentException();
+            e.setMessage('Operation not supported! : '+op);
+            throw e;
+        }
     }
 }
