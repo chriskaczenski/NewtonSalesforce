@@ -1,13 +1,11 @@
 import { LightningElement } from 'lwc';
 import getCalculation from '@salesforce/apex/NewtonController.getCalculation';
-
-//todo - add more ops or dynamically fetch ops from controller
-const operations = [
-    { label: 'Derive', value: 'derive' }
-]
+import getOperations from '@salesforce/apex/NewtonController.getOperations';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class NewtonComponent extends LightningElement {
-    operationOptions = operations;
+    isReady = false;
+    operationOptions = [];
     result;
 
     expressionValue;
@@ -30,18 +28,29 @@ export default class NewtonComponent extends LightningElement {
 
     handleSubmit(){
         this.isDisabled = true;
+        this.result = '';
         let paramsObj = {
             operation : this.operationValue,
             expression : this.expressionValue
         }
         getCalculation({params: paramsObj})
         .then(result =>{
+            let parsedResult = JSON.parse(result).result;
             this.result = result;
+            this.showNotification('Success', parsedResult ,'success');
         })
         .catch((err) =>{
-            //Todo add toast notification
-            console.log(err.body.message);
             this.result = err.body.message;
+
+            //Salesforce errors have message property, but Newton uses error property
+            try{
+                let parsedResult = JSON.parse(this.result);
+                if(parsedResult.hasOwnProperty('error')){
+                    this.showNotification('Error',parsedResult.error,'error');
+                }
+            } catch{
+                this.showNotification('Error',JSON.stringify(this.result),'error');
+            }
         })
         .finally(()=>{
             this.isDisabled = false;
@@ -50,6 +59,22 @@ export default class NewtonComponent extends LightningElement {
         });
     }
 
+    showNotification(title, message, variant) {
+        const evt = new ShowToastEvent({
+            title: title,
+            message: message,
+            variant: variant,
+        });
+        this.dispatchEvent(evt);
+    }
 
+    async connectedCallback() {
+        let operations = await getOperations();
+        for (let op of operations) {
+            this.operationOptions.push({label:op,value:op});
+        }
+        console.log(this.operationOptions);
+        this.isReady = true;
+    }
 
 }

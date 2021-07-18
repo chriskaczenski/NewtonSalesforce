@@ -18,12 +18,17 @@ public class NewtonController {
 
     @AuraEnabled
     public static String getCalculation(NewtonArgumentWrapper params){
-        //todo add user input valiation for blank input
+        throwExceptionIfInputBlank(params);
         try{
             return calculate(params.operation, params.expression);
         } catch(Exception e){
             throw new AuraHandledException(e.getMessage());
         }
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static String[] getOperations(){
+        return OPERATIONS;
     }
 
     public static String calculate(String operation, String expression){
@@ -38,6 +43,13 @@ public class NewtonController {
             e.setMessage('Operation not supported! : '+op);
             throw e;
         }
+    }
+
+    private static void throwExceptionIfInputBlank(NewtonArgumentWrapper params){
+        if (params.operation == null || params.operation == '' ||
+            params.expression == null || params.expression == ''){
+                throw new AuraHandledException('Please enter both an expression and operation!');
+         }
     }
 
     public class NewtonArgumentWrapper{
