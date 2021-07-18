@@ -1,18 +1,13 @@
-# Salesforce DX Project: Next Steps
+# Newton Salesforce app
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+This a Salesforce DX project to demo how to make Http requests using the [Newton Api](https://github.com/aunyks/newton-api)
 
-## How Do You Plan to Deploy Your Changes?
+## How login to the application
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+ Login to the following [org](https://customer-connect-469-dev-ed.lightning.force.com/lightning/page/home).
+ I created a new user account, and the invite should be waiting for your engineering email account.
+ That is the only way I know to get around the MFA challenge, but if you don't see an invite to my org, please let me know.
 
-## Configure Your Salesforce DX Project
+ From the home tab, you should see the lwc component itself. I hope it's use is self-explanatory :)
 
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
 
-## Read All About It
-
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
