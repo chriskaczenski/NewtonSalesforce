@@ -1,16 +1,16 @@
 import { LightningElement } from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getCalculation from '@salesforce/apex/NewtonController.getCalculation';
 import getOperations from '@salesforce/apex/NewtonController.getOperations';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+
 
 export default class NewtonComponent extends LightningElement {
     isReady = false;
+    isButtonDisabled = false;
     operationOptions = [];
-    result;
-
     expressionValue;
     operationValue;
-    isDisabled = false;
+    result;
 
     handleInput(event){
         switch(event.target.name){
@@ -27,7 +27,7 @@ export default class NewtonComponent extends LightningElement {
     }
 
     handleSubmit(){
-        this.isDisabled = true;
+        this.isButtonDisabled = true;
         this.result = '';
         let paramsObj = {
             operation : this.operationValue,
@@ -40,23 +40,26 @@ export default class NewtonComponent extends LightningElement {
             this.showNotification('Success', parsedResult ,'success');
         })
         .catch((err) =>{
-            this.result = err.body.message;
-
-            //Salesforce errors have message property, but Newton uses error property
-            try{
-                let parsedResult = JSON.parse(this.result);
-                if(parsedResult.hasOwnProperty('error')){
-                    this.showNotification('Error',parsedResult.error,'error');
-                }
-            } catch{
-                this.showNotification('Error',JSON.stringify(this.result),'error');
-            }
+            this.handleError(err);
         })
         .finally(()=>{
-            this.isDisabled = false;
+            this.isButtonDisabled = false;
             this.expressionValue = '';
             this.operationValue = '';
         });
+    }
+
+    handleError(err){
+        this.result = err.body.message;
+        //Salesforce errors have message key, but Newton uses error key
+        try{
+            let parsedResult = JSON.parse(this.result);
+            if(parsedResult.hasOwnProperty('error')){
+                this.showNotification('Error',parsedResult.error,'error');
+            }
+        } catch{
+            this.showNotification('Error',JSON.stringify(this.result),'error');
+        }
     }
 
     showNotification(title, message, variant) {
@@ -73,8 +76,6 @@ export default class NewtonComponent extends LightningElement {
         for (let op of operations) {
             this.operationOptions.push({label:op,value:op});
         }
-        console.log(this.operationOptions);
         this.isReady = true;
     }
-
 }
