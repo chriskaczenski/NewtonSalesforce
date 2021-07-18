@@ -16,17 +16,35 @@ public class NewtonController {
         return result;
     }
 
-    public String calculate(String operation, String expression){
+    @AuraEnabled
+    public static String getCalculation(NewtonArgumentWrapper params){
+        //todo add user input valiation for blank input
+        try{
+            return calculate(params.operation, params.expression);
+        } catch(Exception e){
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    public static String calculate(String operation, String expression){
         throwExceptionIfInvalidOperation(operation);
         String endpoint = RESOURCE_URL+operation+'/'+EncodingUtil.urlEncode(expression,'UTF-8');
         return HttpCalloutService.makeRequest(endpoint);
     }
 
-    private void throwExceptionIfInvalidOperation(String op){
+    private static void throwExceptionIfInvalidOperation(String op){
         if (!OPERATIONS.contains(op)){
             IllegalArgumentException e = new IllegalArgumentException();
             e.setMessage('Operation not supported! : '+op);
             throw e;
         }
+    }
+
+    public class NewtonArgumentWrapper{
+        @AuraEnabled
+        public String operation { get; set;}
+
+        @AuraEnabled
+        public String expression { get; set;}
     }
 }
