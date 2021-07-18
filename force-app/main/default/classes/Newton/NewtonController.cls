@@ -7,15 +7,6 @@ public class NewtonController {
     private static final String BASE_URL = 'https://newton.vercel.app';
     private static final String RESOURCE_URL = BASE_URL+'/api/v2/';
 
-    public String demoCalculate(){
-        String operation = 'derive';
-        String expression = 'x^2';
-        String result = calculate(operation,expression);
-
-        system.debug(result);
-        return result;
-    }
-
     @AuraEnabled
     public static String getCalculation(NewtonArgumentWrapper params){
         throwExceptionIfInputBlank(params);
