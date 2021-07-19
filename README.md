@@ -2,12 +2,12 @@
 
 This a Salesforce DX project to demo how to make Http requests using the [Newton Api](https://github.com/aunyks/newton-api)
 
-## How login to the application
+There is custom Lightning Web Component on the home tab of the Sales app, which makes HTTP callouts to the service.
 
- Login to the following [org](https://customer-connect-469-dev-ed.lightning.force.com/lightning/page/home).
- I created a new user account, and the invite should be waiting for your engineering email account.
- That is the only way I know to get around the MFA challenge, but if you don't see an invite to my org, please let me know.
+## How access the feature.
 
- From the home tab, you should see the lwc component itself. I hope it's use is self-explanatory :)
-
-
+ - The invite should be waiting for your engineering email account, which will allow you to set a password
+ - The username is engineering@gonimbly.com.dev1
+ - Login to the following [org](https://customer-connect-469-dev-ed.lightning.force.com/lightning/page/home)
+ - The above link should take you directly to the LWC Newton feature, but if not - please navigate to the home tab of the Sales app
+ - Enter an expression, such as x^2, and select an operation. The submit button is in the upper right hand corner.
