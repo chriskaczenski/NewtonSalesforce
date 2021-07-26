@@ -3,11 +3,16 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getCalculation from '@salesforce/apex/NewtonController.getCalculation';
 import getOperations from '@salesforce/apex/NewtonController.getOperations';
 
+const columns = [{label:'Operation',fieldName:'operation'},
+    {label:'Expression',fieldName:'expression'},
+    {label:'Result',fieldName:'result'}];
 
 export default class NewtonComponent extends LightningElement {
     isReady = false;
     isButtonDisabled = false;
     operationOptions = [];
+    columns = columns;
+    data = [];
     expressionValue;
     operationValue;
     result;
@@ -34,10 +39,11 @@ export default class NewtonComponent extends LightningElement {
             expression : this.expressionValue
         }
         getCalculation({params: paramsObj})
-        .then(result =>{
-            let parsedResult = JSON.parse(result).result;
-            this.result = result;
-            this.showNotification('Success', parsedResult ,'success');
+        .then(data =>{
+            let parsedData = JSON.parse(data);
+            this.result = data;
+            this.data = [...this.data,parsedData]
+            this.showNotification('Success', parsedData.result ,'success');
         })
         .catch((err) =>{
             this.handleError(err);

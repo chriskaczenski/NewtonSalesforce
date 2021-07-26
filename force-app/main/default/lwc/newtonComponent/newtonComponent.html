@@ -25,7 +25,16 @@
                 options={operationOptions}
                 onchange={handleInput} >
             </lightning-combobox>
-            <h1>{result}</h1>
+            <br/>
+            <div style="height: 300px;">
+                <lightning-datatable
+                        key-field="id"
+                        data={data}
+                        show-row-number-column
+                        hide-checkbox-column
+                        columns={columns}>
+                </lightning-datatable>
+            </div>
         </div>
         </template>
     </lightning-card>
